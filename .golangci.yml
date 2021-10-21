@@ -14,7 +14,6 @@ issues:
 
 linters:
   enable:
-    - wsl
     - bodyclose
     - dupl
     - exportloopref

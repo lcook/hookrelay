@@ -18,7 +18,6 @@ const (
 	 * Check whether the application type sent is `application/json`.
 	 */
 	OptionCheckType
-
 	/*
 	 * Reasonable defaults for webhook listening.
 	 */

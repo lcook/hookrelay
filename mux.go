@@ -28,9 +28,7 @@ func InitMux(i interface{}, hooks []Hook, config, port string) (*http.Server, er
 	 */
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig, os.Interrupt, syscall.SIGTERM)
-
 	go shutdown(srv, sig)
-
 	return srv, nil
 }
 
@@ -50,7 +48,6 @@ func registerMux(i interface{}, hooks []Hook, config, port string) (*http.Server
 		if err != nil {
 			return nil, err
 		}
-
 		mux.HandleFunc(hook.Endpoint(), func(f http.HandlerFunc) http.HandlerFunc {
 			return func(w http.ResponseWriter, r *http.Request) {
 				if (hook.Options()&OptionCheckMethod != 0) &&
@@ -67,7 +64,6 @@ func registerMux(i interface{}, hooks []Hook, config, port string) (*http.Server
 			}
 		}(hook.Response(i)))
 	}
-
 	return &http.Server{
 		Addr:    ":" + port,
 		Handler: mux,
@@ -76,12 +72,9 @@ func registerMux(i interface{}, hooks []Hook, config, port string) (*http.Server
 
 func shutdown(server *http.Server, sig <-chan os.Signal) {
 	<-sig
-
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-
 	server.SetKeepAlivesEnabled(false)
-
 	if err := server.Shutdown(ctx); err != nil {
 		fmt.Println("Could not gracefully shutdown...", err)
 	}
